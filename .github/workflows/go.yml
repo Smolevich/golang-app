@@ -5,6 +5,19 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:10-alpine
+        ports:
+         - 5432:5432
+        env:
+          POSTGRES_PASSWORD: golang-app
+          POSTGRES_DB: golang-app
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
 
     - name: Set up Go 1.13
@@ -33,4 +46,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build
-      run: go build -v .
+      run: go build -o golang-app
+    - name: Run application
+      run: |
+        export SQLX_POSTGRES_DSN=postgres://postgres:golang-app@0.0.0.0/golang-app?sslmode=disable
+        ./golang-app

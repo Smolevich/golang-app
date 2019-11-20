@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  potgres:
+    image: postgres:12-alpine
+    container_name: ${PROJECT_NAME}-postgres
+    environment:
+      POSTGRES_PASSWORD: golang-app
+      POSTGRES_DB: golang-app
+    ports:
+      - 5432:5432
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
