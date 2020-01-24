@@ -48,6 +48,7 @@ jobs:
     - name: Build
       run: go build -o golang-app
     - name: Run application
-      run: |
-        export SQLX_POSTGRES_DSN=postgres://postgres:golang-app@0.0.0.0/golang-app?sslmode=disable
-        ./golang-app
+      run: ./golang-app
+      env:
+        SQLX_POSTGRES_DSN: "postgres://postgres:golang-app@0.0.0.0/golang-app?sslmode=disable"
+
